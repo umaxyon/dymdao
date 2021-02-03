@@ -4,37 +4,49 @@ AWS のDynamoDBの記述を簡単にして、気軽に使えるようにするbo
 
 ## Features
 
-* 「get_item」と「query」を使い分けなくて良くなる「find」メソッドが追加される。
-* 常に結果がListで戻ってくる
-* キー名を指定する必要が無くなる
-* 既存のboto3のメソッドはそのまま利用できる
+* 既存のboto3のメソッドがそのまま利用できます。ただし、レスポンスから「Item」「Items」を取り出し、結果だけを返却します。
+* 「findメソッド」が追加されます。findメソッドは、get_item と query の代替として、より簡単な記述法を提供します。
+
+
+
+## Install
+
+```shell
+pip install git+https://github.com/umaxyon/dymdao.git
+```
 
 ## Usage
 
 ```python
-from src.dymdao import DymDao
+from dymdao.dymdao import DymDao
 
 dao = DymDao()
-tbl = dao.table('tbl_hogehoge')  # HASH、RANGE両方定義された複合テーブル
+tbl = dao.table('tbl_hogehoge')  # HASH、RANGE両方定義された複合テーブル、または単一キーテーブル
 
-# HASH、RANGE 両指定(get_item実行)
-dat = tbl.find('3238', range_value="2021/02/03")
 
-# HASH のみ指定(query実行)
+# boto3 の Tableに定義されているメソッドが全てそのまま使える
+dat = tbl.get_item(Key={'mykey': '3238', 'row': '2021/02/03'})
+
+# ただし、「dat["Item"]」とか「dat["Items"]」とか書く必要はなく、Itemから取り出された結果が返却される
+print(dat)
+
+# findメソッド
+# HASH、RANGE 両指定 で1件取得
+dat = tbl.find('3238', "2021/02/03")
+
+# 結果は常にリストで返却される。データが存在しない場合も、Noneではなく、空リストが返却される。
+print(len(dat))
+
+# HASH のみ指定。複合テーブルの場合、パーティションのデータが昇順で取得される。
+# 単一キーテーブルの場合、1件取得される。
 dat = tbl.find('3238')
 
 # query(降順)
 dat = tbl.find('3238', asc=False)
 
-# 別のオプションも指定可能
+# queryの別のオプションも指定可能
 dat = tbl.find('3238', option={"Limit": 2})
 
 # Listで戻ってくる
 print(dat[0])
-
-# 既存のメソッドもそのまま使える
-dat = tbl.get_item(Key={'mykey': '3238', 'row': '2021/02/03'})
-
-# 「dat["Item"]」とか「dat["Items"]」とか書かなくていい
-print(dat)
 ```
