@@ -21,7 +21,7 @@ setuptools.setup(
     author_email="umaxyon@gmail.com",
     long_description=long_description(),
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/umaxyon/dymdao",
     packages=setuptools.find_packages('src'),
     package_dir={"": "src"},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
