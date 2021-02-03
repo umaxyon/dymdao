@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../DymDao/.idea/DymDao.iml" filepath="$PROJECT_DIR$/../DymDao/.idea/DymDao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../dymdao/.idea/dymdao.iml" filepath="$PROJECT_DIR$/../dymdao/.idea/dymdao.iml" />
     </modules>
   </component>
 </project>
