@@ -3,9 +3,9 @@ import inspect
 
 
 class DymDao:
-    def __init__(self):
-        self.db = boto3.resource('dynamodb')
-        self.client = boto3.client('dynamodb')
+    def __init__(self, *args, **kwargs):
+        self.db = boto3.resource('dynamodb', *args, **kwargs)
+        self.client = boto3.client('dynamodb', *args, **kwargs)
 
     def table(self, table_name):
         return WrapTable(self, table_name)

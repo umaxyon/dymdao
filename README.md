@@ -50,3 +50,26 @@ dat = tbl.find('3238', option={"Limit": 2})
 # Listで戻ってくる
 print(dat[0])
 ```
+
+## 認証情報、オプションの指定
+
+DymDao は boto3 の上位ラッパーであり、AWS接続の資格情報検索については boto3 のメカニズムをそのまま継承します。 
+
+具体的には以下の優先順に従います。
+
+1. クライアント生成時のパラメータ、Configオブジェクト
+2. 環境変数
+3. ~/.aws/config ファイル
+
+詳細は boto3 のドキュメントを参照してください。
+https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
+
+DymDao の生成時に指定した認証情報、その他パラメータは、そのまま boto3 の resource、client の生成に引き継がれます。
+
+```python
+dao = DymDao(
+    aws_access_key_id="your_access_key_id",
+    aws_secret_access_key="your_secret_access_key",
+    region_name="your_region"
+)
+```
